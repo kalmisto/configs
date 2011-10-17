@@ -222,10 +222,4 @@ function! SuperCleverTab()
 	endif
 endfunction
 
-"inoremap <Tab> <C-R>=SuperCleverTab()<cr>
-
-" For Java
-"set makeprg=ant
-"set makeprg=ant\ -emacs
-"set efm=\ %#[javac]\ %#%f:%l:%c:%*\\d:%*\\d:\ %t%[%^:]%#:%m,\%A\ %#[javac]\ %f:%l:\ %m,%-Z\ %#[javac]\ %p^,%-C%.%#
 
