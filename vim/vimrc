@@ -1,0 +1,231 @@
+" Needs to be before colorscheme commands
+autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
+
+if has("gui_running")
+	" GUI font
+	"set gfn=Monospace\ 9
+	"set gfn=Mensch\ 9
+	set gfn=Droid\ Sans\ Mono\ 9
+	"set background=dark
+	"colors zenburn
+	let moria_style='dark' "light
+	let moria_fontface = 'mixed'
+	"let moria_monochrome = 1
+	colors moria
+	set t_Co=256
+	set cursorline
+	set guioptions-=T
+" feel free to choose :set background=light for a different style
+else
+	colorscheme koehler
+	"set term=screen
+endif
+
+
+syntax on
+set nocompatible
+set nowrap
+set nobackup
+set listchars=tab:>-,eol:$,trail:.,extends:#
+"set list
+set ruler
+"set rulerformat=%25([%l,%v]\ %p%%%)
+set statusline=[%n]\ %<%.99f\ %h%w%m%r%y%{exists('g:loaded_fugitive')?fugitive#statusline():''}%{exists('g:loaded_rvm')?rvm#statusline():''}%=%-16(\ %l\[%v\],%c\ %)%P
+set laststatus=2
+set hlsearch
+set number
+"set term=xterm-color
+set backspace=indent,eol,start  " more powerful backspacing
+set ai
+set wildignore=*.swp,*.bak,*.pyc,*.class
+"set textwidth=78
+"set softtabstop=4
+"set shiftwidth=4
+"set tabstop=4
+"set expandtab " use spaces instead of tabs
+"set noto "set no timeout
+set tm=500 " time out to 500msec
+set wildmenu
+set history=50
+set showcmd     " display incomplete commands
+set incsearch   " do incremental searching
+set smarttab
+set smartindent
+set copyindent
+" have % bounce between angled brackets, as well as t'other kinds:
+set matchpairs+=<:>
+nnoremap Q gqap
+vnoremap Q gq
+
+" Allow deleting selection without updating the clipboard (yank buffer)
+noremap dd "_dd
+vnoremap x "_x
+vnoremap X "_X
+" Don't move the cursor after pasting
+" (by jumping to back start of previously changed text)
+noremap p p`[
+noremap P P`[
+
+
+" Default file encoding for new files
+setglobal fenc=utf-8
+" Auto detect file encoding when opening a file. To check what file encoding was
+" selected run ":set fenc" and if you know the auto detection failed and want to
+" force another one run ":edit ++enc=<your_enc>".
+set fencs=utf-8,latin-1
+" Internal encoding used by vim buffers, help and commands
+set encoding=utf-8
+" Terminal encoding used for input and terminal display
+" Make sure your terminal is configured with the same encoding.
+set tenc=utf-8
+
+
+filetype on
+filetype plugin indent on
+filetype plugin on
+
+
+" Reveal extra white spaces
+"highlight ExtraWhitespace ctermbg=red guibg=red
+" Show trailing whitespace:
+match ExtraWhitespace /\s\+$/
+" Show trailing whitepace and spaces before a tab:
+match ExtraWhitespace /\s\+$\| \+\ze\t/
+" Alternatively, the following pattern will match trailing whitespace, except when typing at the end of a line.
+"match ExtraWhitespace /\s\+\%#\@<!$/
+
+
+" Allow visual select incrementing
+vnoremap <c-a> :Inc<CR>
+
+
+" omnicompletes
+autocmd FileType python set omnifunc=pythoncomplete#Complete
+autocmd FileType java set omnifunc=javacomplete#CompleteJava
+autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
+autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+autocmd FileType c set omnifunc=ccomplete#Complete
+
+
+" in human-language files, automatically format everything at 72 chars:
+autocmd FileType mail,human set formatoptions+=t textwidth=72
+" for C-like programming, have automatic indentation:
+autocmd FileType c,cpp,slang set cindent
+" for actual C (not C++) programming where comments have explicit end
+" characters, if starting a new line in the middle of a comment automatically
+" insert the comment leader characters:
+autocmd FileType c set formatoptions+=ro
+
+
+" In many terminal emulators the mouse works just fine, thus enable it.
+if has('mouse')
+    set mouse=a
+endif
+
+
+" Tagglist settings
+let Tlist_Ctags_Cmd="/usr/bin/ctags-exuberant"
+"let Tlist_Auto_Open = 1
+let Tlist_Winwidth = 60
+let Tlist_Compact_Format = 1
+let Tlist_Exit_OnlyWindow = 1
+let Tlist_Use_Right_Window = 1
+let Tlist_File_Fold_Auto_Close = 1
+let Tlist_Sort_Type = "name"
+map <F4> :TlistToggle<cr>
+" fold from { to }
+"nmap <F1> /}<CR>zf%<ESC>:nohlsearch<CR>
+
+
+" Ctags path(s)
+set tags+=/home/weezel/.vim/tags/c
+set tags+=/home/weezel/.vim/tags/cpp
+set tags+=tags;
+
+
+" OmniCppComplete
+" <C-X><C-O> opens the omnicompletion manually.
+"nmap <C-@> <C-X><C-I>
+imap <C-k> <C-X><C-I>
+"let OmniCpp_NamespaceSearch = 1
+"let OmniCpp_GlobalScopeSearch = 1
+"let OmniCpp_ShowAccess = 1
+"let OmniCpp_ShowScopeInAbbr = 0
+"let OmniCpp_MayCompleteDot = 1
+"let OmniCpp_MayCompleteArrow = 1
+"let OmniCpp_MayCompleteScope = 1
+"let OmniCpp_DefaultNamespaces = ["qt", "_GLIBCXX_STD"]
+" automatically open and close the popup menu / preview window
+au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+set showfulltag
+set completeopt=menuone,menu,preview
+"set completeopt=menuone,menu,longest,preview
+
+
+" build tags of your own project with CTRL+F12
+"map <C-F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
+"noremap <F12> :!ctags-exuberant -R --c++-kinds=+p --fields=+iaS --extra=+q .<cr>
+noremap <F12> :!ctags -R --c++-kinds=+pl --fields=+iaS --extra=+q .<CR>
+inoremap <F12> :!ctags -R --c++-kinds=+pl --fields=+iaS --extra=+q .<CR>
+"inoremap <F12> <Esc>:!ctags-exuberan -R --c++-kinds=+p --fields=+iaS --extra=+q .<cr>
+
+
+
+" QuickFix mappings
+nnoremap <C-n> :cn<CR>
+nnoremap <C-p> :cp<CR>
+
+" Make mappings
+inoremap <F5> <Esc> :make 
+nnoremap <F5> :make 
+
+" Visually select areas for folding, editing etc.
+nnoremap <C-j> ^v%$
+
+
+" NerdTree
+map <F3> :NERDTreeToggle<CR>
+
+
+" Paste Mode On/Off
+map <F10> :call Paste_on_off()<CR>
+set pastetoggle=<F10>
+let paste_mode = 0 " 0 = normal, 1 = paste
+func! Paste_on_off()
+	if g:paste_mode == 0
+		set paste
+		set nonumber
+		let g:paste_mode = 1
+	else
+		set number
+		set nopaste
+		let g:paste_mode = 0
+	endif
+	return
+endfunc
+
+
+function! SuperCleverTab()
+	if strpart(getline('.'), 0, col('.') - 1) =~ '^\s*$'
+		return "\<Tab>"
+	else
+		if &omnifunc != ''
+			return "\<C-X>\<C-O>"
+		elseif &dictionary != ''
+			return "\<C-K>"
+		else
+			return "\<C-N>"
+		endif
+	endif
+endfunction
+
+"inoremap <Tab> <C-R>=SuperCleverTab()<cr>
+
+" For Java
+"set makeprg=ant
+"set makeprg=ant\ -emacs
+"set efm=\ %#[javac]\ %#%f:%l:%c:%*\\d:%*\\d:\ %t%[%^:]%#:%m,\%A\ %#[javac]\ %f:%l:\ %m,%-Z\ %#[javac]\ %p^,%-C%.%#
+

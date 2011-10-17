@@ -1,0 +1,1 @@
+## Muutama asetustiedosto parempaan elämään
